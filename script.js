@@ -1,7 +1,5 @@
 const DATA_URL = "https://script.google.com/macros/s/AKfycbwQai3AEldoeZlXj6PNjqWauaJn2vShdPDMcR3DeDz1DyEDh_tOJ7o152QHrvxF4oA4rw/exec";
 
-
-
 const AREA_ORDER = [
   { name: "Darlington", code: "DL" },
   { name: "Durham", code: "DH" },
