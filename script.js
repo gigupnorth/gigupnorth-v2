@@ -10,64 +10,66 @@ const AREA_ORDER = [
   { name: "Sunderland", code: "SR" }
 ];
 
-const app = document.getElementById("app");
-
-async function loadData() {
-  const res = await fetch(DATA_URL);
-  const events = await res.json();
-  render(events);
+function clean(str) {
+  return (str || "").toString().trim().toLowerCase();
 }
 
 function render(events) {
+  const app = document.getElementById("app");
   app.innerHTML = "";
 
-  // 1. sort by date
-  const sorted = [...events].sort((a, b) =>
-    new Date(a.date) - new Date(b.date)
+  // sort by date
+  const sorted = [...events].sort(
+    (a, b) => new Date(a.date) - new Date(b.date)
   );
 
-  // 2. group by date
-  const groupedByDate = {};
+  // group by date
+  const byDate = {};
 
   sorted.forEach(ev => {
-    const date = ev.date || "No Date";
-    if (!groupedByDate[date]) groupedByDate[date] = [];
-    groupedByDate[date].push(ev);
+    const d = ev.date || "No Date";
+    if (!byDate[d]) byDate[d] = [];
+    byDate[d].push(ev);
   });
 
-  // 3. render
-  Object.keys(groupedByDate).forEach(date => {
+  // render each date
+  Object.keys(byDate).forEach(date => {
     const dateEl = document.createElement("div");
+    dateEl.textContent = date;
     dateEl.style.fontWeight = "bold";
     dateEl.style.marginTop = "20px";
-    dateEl.textContent = date;
     app.appendChild(dateEl);
 
-    const dayEvents = groupedByDate[date];
+    const dayEvents = byDate[date];
 
-    // 4. loop through fixed area order
+    // loop fixed area order
     AREA_ORDER.forEach(area => {
-      const filtered = dayEvents.filter(
-        ev => (ev.area || "").toLowerCase() === area.name.toLowerCase()
+
+      const matches = dayEvents.filter(ev =>
+        clean(ev.area) === clean(area.name)
       );
 
-      if (filtered.length === 0) return;
+      if (matches.length === 0) return;
 
-      // header
+      // AREA HEADER
       const header = document.createElement("div");
+      header.textContent = `${area.name} ${area.code}`;
       header.style.marginTop = "10px";
       header.style.fontWeight = "bold";
-      header.textContent = `${area.name} and ${area.code}`;
       app.appendChild(header);
 
-      // events
-      filtered.forEach(ev => {
+      // EVENTS
+      matches.forEach(ev => {
         const row = document.createElement("div");
-        row.textContent = `${ev.venue || ""}: ${ev.title || ""}`;
+
+        const venue = ev.venue || "";
+        const band = ev.title || "";
+
+        row.textContent = `${venue} — ${band}`;
+
         app.appendChild(row);
       });
     });
   });
 }
-
 loadData();
