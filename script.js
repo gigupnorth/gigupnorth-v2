@@ -11,7 +11,17 @@ const AREA_ORDER = [
 function clean(str) {
   return (str || "").toString().trim().toLowerCase();
 }
+async function loadData() {
+  try {
+    const res = await fetch(DATA_URL);
+    const data = await res.json();
 
+    render(data);
+
+  } catch (err) {
+    console.error("Failed to load data:", err);
+  }
+}
 function render(events) {
   const app = document.getElementById("app");
   app.innerHTML = "";
