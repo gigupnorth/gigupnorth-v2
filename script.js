@@ -1,42 +1,37 @@
-const DATA_URL = "PASTE_YOUR_GOOGLE_SCRIPT_URL_HERE";
-
-let events = [];
-let view = "cards";
+const DATA_URL = "https://script.google.com/macros/s/AKfycbwQai3AEldoeZlXj6PNjqWauaJn2vShdPDMcR3DeDz1DyEDh_tOJ7o152QHrvxF4oA4rw/exec";
 
 const app = document.getElementById("app");
-const toggle = document.getElementById("viewToggle");
 
-toggle.addEventListener("click", () => {
-  view = view === "cards" ? "text" : "cards";
-  render();
-  updateButton();
-});
+async function loadData() {
+  try {
+    const res = await fetch(DATA_URL);
+    const events = await res.json();
 
-function updateButton() {
-  toggle.textContent =
-    view === "cards" ? "Switch to Text View" : "Switch to Cards";
+    render(events);
+
+  } catch (err) {
+    console.error("Error loading data:", err);
+  }
 }
 
-async function load() {
-  const res = await fetch(DATA_URL);
-  events = await res.json();
-  render();
-}
-
-function render() {
+function render(events) {
   app.innerHTML = "";
 
-  const sorted = [...events].sort(
-    (a, b) => new Date(a.date) - new Date(b.date)
+  // sort by date
+  const sorted = [...events].sort((a, b) =>
+    new Date(a.date) - new Date(b.date)
   );
 
+  // group by date
   const grouped = {};
 
   sorted.forEach(ev => {
-    grouped[ev.date] = grouped[ev.date] || [];
-    grouped[ev.date].push(ev);
+    const date = ev.date || "No Date";
+    if (!grouped[date]) grouped[date] = [];
+    grouped[date].push(ev);
   });
 
+  // render
   Object.keys(grouped).forEach(date => {
     const dateEl = document.createElement("div");
     dateEl.className = "date";
@@ -44,30 +39,19 @@ function render() {
     app.appendChild(dateEl);
 
     grouped[date].forEach(ev => {
-      if (view === "cards") {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-          <h3>${ev.title || ""}</h3>
-          <p>${ev.venue || ""}</p>
-          <p>${ev.time || ""}</p>
-          <p>${ev.price || ""}</p>
-        `;
-        app.appendChild(card);
-      } else {
-        const row = document.createElement("div");
-        row.className = "row";
-        row.innerHTML = `
-          <span>${ev.title || ""}</span>
-          <span>${ev.venue || ""}</span>
-          <span>${ev.time || ""}</span>
-          <span>${ev.price || ""}</span>
-        `;
-        app.appendChild(row);
-      }
+      const el = document.createElement("div");
+      el.className = "event";
+
+      el.innerHTML = `
+        <span class="title">${ev.title || ""}</span>
+        <span class="venue">${ev.venue || ""}</span>
+        <span class="time">${ev.time || ""}</span>
+        <span class="price">${ev.price || ""}</span>
+      `;
+
+      app.appendChild(el);
     });
   });
 }
 
-load();
-updateButton();
+loadData();
