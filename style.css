@@ -1,0 +1,39 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: white;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background: #000;
+  position: sticky;
+  top: 0;
+}
+
+#app {
+  padding: 10px;
+}
+
+.date {
+  margin-top: 20px;
+  color: #aaa;
+  font-weight: bold;
+}
+
+.card {
+  background: #222;
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  border-bottom: 1px solid #333;
+  padding: 5px 0;
+}
