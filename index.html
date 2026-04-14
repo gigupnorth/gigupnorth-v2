@@ -2,19 +2,46 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Gig Up North v2</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Gig List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .date {
+      margin-top: 25px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #aaa;
+      border-bottom: 1px solid #333;
+      padding-bottom: 5px;
+    }
+
+    .event {
+      padding: 6px 0;
+      border-bottom: 1px solid #222;
+    }
+
+    .title {
+      font-weight: bold;
+    }
+
+    .venue, .time, .price {
+      margin-left: 10px;
+      color: #ccc;
+      font-size: 14px;
+    }
+  </style>
 </head>
 
 <body>
 
-<header class="topbar">
-  <h1>Gig Up North</h1>
-
-  <button id="viewToggle">Switch to Text View</button>
-</header>
-
-<main id="app"></main>
+<h1>Gig Listings</h1>
+<div id="app"></div>
 
 <script src="script.js"></script>
 </body>
