@@ -1,12 +1,12 @@
 const DATA_URL = "https://script.google.com/macros/s/AKfycbwQai3AEldoeZlXj6PNjqWauaJn2vShdPDMcR3DeDz1DyEDh_tOJ7o152QHrvxF4oA4rw/exec";
 
-const AREA_ORDER = [
-  { name: "Darlington", code: "DL" },
-  { name: "Durham", code: "DH" },
-  { name: "Middlesbrough", code: "TS" },
-  { name: "Newcastle", code: "NE" },
-  { name: "Sunderland", code: "SR" }
-];
+const COLOUR_MAP = {
+  blue: "Darlington",
+  green: "Durham",
+  orange: "Middlesbrough",
+  black: "Newcastle",
+  red: "Sunderland"
+};
 
 function clean(str) {
   return (str || "").toString().trim().toLowerCase();
@@ -53,8 +53,10 @@ function render(events) {
     // loop fixed area order
     AREA_ORDER.forEach(area => {
 
-      const matches = dayEvents.filter(ev =>
-        clean(ev.area) === clean(area.name)
+      const matches = dayEvents.filter(ev => {
+  const colour = clean(ev.j || ev.colour); // Column J
+  return COLOUR_MAP[colour] === area.name;
+});
       );
 
       if (matches.length === 0) return;
@@ -71,7 +73,7 @@ function render(events) {
         const row = document.createElement("div");
 
         const venue = ev.venue || "";
-        const band = ev.title || "";
+        const band = ev.title/artist || "";
 
         row.textContent = `${venue} — ${band}`;
 
