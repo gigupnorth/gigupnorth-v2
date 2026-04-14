@@ -92,4 +92,4 @@ function loadData() {
 
 // START APP
 loadData();
-loadData();
+
