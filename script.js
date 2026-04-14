@@ -83,5 +83,13 @@ function render(events) {
     });
   });
 }
+function loadData() {
+  fetch(DATA_URL)
+    .then(res => res.json())
+    .then(data => render(data))
+    .catch(err => console.error(err));
+}
 
+// START APP
+loadData();
 loadData();
