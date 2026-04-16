@@ -50,7 +50,7 @@ function render(events) {
     const dateEl = document.createElement("div");
     dateEl.textContent = date;
     dateEl.style.fontWeight = "bold";
-    dateEl.style.marginTop = "20px";
+    dateEl.style.marginTop = "40px";
     app.appendChild(dateEl);
 
     const dayEvents = byDate[date];
