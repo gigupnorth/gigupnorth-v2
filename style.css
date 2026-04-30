@@ -24,7 +24,8 @@ body {
 .date {
   margin-top: 20px;
   color: #aaa;
-  font-weight: bold;
+  font-size: 2em;   /* double the normal size */
+  font-weight: 700; /* optional: makes it punchier */
 }
 
 .card {
